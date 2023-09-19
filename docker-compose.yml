@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  database:
+    image: postgres:alpine
+    container_name: curagan
+    hostname: database
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    restart: always
+  app:
+    image: nikenhpsr/curagan
+    container_name: curagan-app
+    build: .
+    ports:
+      - 4000:4000
+    env_file:
+      - .env
+    depends_on:
+      - database
+    restart: always
+volumes:
+  postgres:

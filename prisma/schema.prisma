@@ -1,0 +1,72 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Patient {
+    id          String                     @id @default(uuid())
+    email       String                     @unique
+    password    String
+    name        String
+    imageURL    String
+    appointment AppointmentPatientDoctor[]
+}
+
+model Doctor {
+    id             String                     @id @default(uuid())
+    email          String                     @unique
+    specialization Specialization
+    password       String
+    name           String
+    imageURL       String
+    loc            String
+    hospital       String
+    schedule       String
+    appointment    AppointmentPatientDoctor[]
+}
+
+model AppointmentPatientDoctor {
+    patient   Patient  @relation(fields: [patientID], references: [id])
+    patientID String
+    doctor    Doctor   @relation(fields: [doctorID], references: [id])
+    doctorID  String
+    datetime  DateTime
+    status    Status
+
+    @@id([patientID, doctorID])
+}
+
+enum Specialization {
+    Umum
+    Jantung
+    Kulit
+    Lambung
+    Darah
+    Penyakit_Menular
+    Ginjal
+    Saraf
+    Kandungan
+    Kanker
+    Mata
+    Tulang
+    THT
+    Anak
+    Jiwa
+    Paru_Paru
+    Radiologi
+    Rematologi
+    Urologi
+    Bedah_Umum
+}
+
+enum Status {
+    Pending
+    Submitted
+    Accepted
+    Rejected
+    Done
+}

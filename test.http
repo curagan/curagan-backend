@@ -1,0 +1,66 @@
+### REGISTER DOCTOR
+POST http://localhost:3000/doctor/auth/register
+Content-Type: application/json
+
+{
+  "email": "testing@email.com",
+  "specialization": "Umum",
+  "password": "doktertest",
+  "name": "halodek",
+  "imageURL": "abc",
+  "loc": "jakarta",
+  "hospital": "rscm",
+  "schedule": [
+    {
+        "days": "senin",
+        "time": [9.00, 10.00]
+    },
+    {
+        "days": "selasa",
+        "time": [9.00, 10.00]
+    }
+  ]
+}
+
+### LOGIN FOR DOCTORE
+POST http://localhost:3000/doctor/auth/login
+Content-Type: application/json
+
+{
+    "email": "testing@email.com",
+    "password": "doktertest"
+}
+
+### GET ALL DOCTOR
+GET http://localhost:3000/doctor
+
+
+
+
+##################################################### PATIENT ############################################
+
+### REGISTER
+POST http://localhost:3000/patient/auth/register
+Content-Type: application/json
+
+{
+  "email": "patient1@testing.com",
+  "password": "patienttest",
+  "name": "patient test",
+  "imageURL": "string"
+}
+
+### LOGIN FOR PATIENT
+
+POST http://localhost:3000/patient/auth/login
+Content-Type: application/json
+
+{
+  "email": "patient1@testing.com",
+  "password": "patienttest"
+}
+
+### GET ALL PATIENT
+GET http://localhost:3000/patient
+
+

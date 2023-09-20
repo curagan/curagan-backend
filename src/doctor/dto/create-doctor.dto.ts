@@ -24,7 +24,6 @@ enum Specialization {
 export class CreateDoctorDto {
   id: string;
   email: string;
-  specialization: Specialization;
   password: string;
   name: string;
   imageURL: string;

@@ -19,7 +19,7 @@ model Patient {
 model Doctor {
     id             String                     @id @default(uuid())
     email          String                     @unique
-    specialization Specialization
+    specialization String                     @default("Umum")
     password       String
     name           String
     imageURL       String

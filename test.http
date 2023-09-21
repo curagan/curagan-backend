@@ -4,9 +4,8 @@ Content-Type: application/json
 
 {
   "email": "testing@email.com",
-  "specialization": "Umum",
   "password": "doktertest",
-  "name": "halodek",
+  "name": "halodek2",
   "imageURL": "abc",
   "loc": "jakarta",
   "hospital": "rscm",
@@ -22,13 +21,13 @@ Content-Type: application/json
   ]
 }
 
-### LOGIN FOR DOCTORE
+### LOGIN FOR DOCTOR
 POST http://localhost:3000/doctor/auth/login
 Content-Type: application/json
 
 {
-    "email": "testing@email.com",
-    "password": "doktertest"
+    "email": "testing2@email.com",
+    "password": "doktertest2"
 }
 
 ### GET ALL DOCTOR
@@ -64,3 +63,5 @@ Content-Type: application/json
 GET http://localhost:3000/patient
 
 
+### SOCKET
+GET http://localhost:3000/status/1

@@ -59,7 +59,7 @@ export class PatientService {
       algorithm: 'HS256',
     };
     return {
-      response: response,
+      response: response.id,
       access_token: await this.jwtService.signAsync(response, options),
     };
   }

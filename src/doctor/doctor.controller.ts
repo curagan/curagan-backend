@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto, LoginDto } from './dto/create-doctor.dto';
+import { AuthGuard, RoleGuard, Roles } from './doctor.guard';
 
 @Controller('doctor')
 export class DoctorController {
@@ -19,6 +20,9 @@ export class DoctorController {
 
   /// BASIC CRUD
   @Get('/')
+  @UseGuards(RoleGuard)
+  @Roles('Doctor')
+  @UseGuards(AuthGuard)
   getAll() {
     return this.doctorService.getAllDoctor();
   }

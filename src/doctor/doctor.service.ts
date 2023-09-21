@@ -36,7 +36,7 @@ export class DoctorService {
       algorithm: 'HS256',
     };
     return {
-      response: response,
+      response: response.id,
       access_token: await this.jwtService.signAsync(response, options),
     };
   }
@@ -66,6 +66,10 @@ export class DoctorService {
   }
 
   async getAllDoctor() {
-    return await this.prismaService.doctor.findMany();
+    const response = await this.prismaService.doctor.findMany();
+    response.map((res) => {
+      res.password = undefined;
+    });
+    return response;
   }
 }

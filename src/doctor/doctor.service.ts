@@ -5,7 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { CreateDoctorDto, LoginDto } from './dto/create-doctor.dto';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../prisma/prisma.service'
 import * as bcrypt from 'bcrypt';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
 
@@ -14,7 +14,7 @@ export class DoctorService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(loginDto: LoginDto) {
     const response = await this.prismaService.doctor.findFirst({

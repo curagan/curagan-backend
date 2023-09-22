@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
-import { UpdateAppoinmentDto } from './dto/update-appointment.dto';
+import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AppointmentsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+  ) { }
 
   async create(createAppointmentDto: CreateAppointmentDto) {
     const { patientId, doctorId, datetime, status } = createAppointmentDto;
@@ -36,7 +38,7 @@ export class AppointmentsService {
     return appointment;
   }
 
-  async update(appointmentId: string, UpdateAppoinmentDto: UpdateAppoinmentDto) {
+  async update(appointmentId: string, UpdateAppointmentDto: UpdateAppointmentDto) {
     const appointment = await this.prisma.appointmentPatientDoctor.findUnique({
       where: { appointmentId },
     })
@@ -45,13 +47,11 @@ export class AppointmentsService {
       throw new NotFoundException(`No appointment was found with the specified ID: ${appointmentId}.`)
     }
 
-    const updatedAppoinment = await this.prisma.appointmentPatientDoctor.update({
+    const updatedAppointment = await this.prisma.appointmentPatientDoctor.update({
       where: { appointmentId },
       data: {
-        status: UpdateAppoinmentDto.status
+        status: UpdateAppointmentDto.status
       }
     })
-    return updatedAppoinment
   }
-
 }

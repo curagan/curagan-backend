@@ -5,6 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { CreateDoctorDto, LoginDto } from './dto/create-doctor.dto';
+import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
@@ -71,5 +72,64 @@ export class DoctorService {
       res.password = undefined;
     });
     return response;
+  }
+
+  async getDoctorById(id: string) {
+    const doctor = await this.prismaService.doctor.findUnique({
+      where: { id },
+    });
+    if (!doctor) {
+      throw new NotFoundException();
+    }
+    doctor.password = undefined;
+    return doctor;
+  }
+
+  async updateDoctor(id: string, updateDoctorDto: UpdateDoctorDto) {
+    const doctor = await this.prismaService.doctor.findUnique({
+      where: { id },
+    });
+    if (!doctor) {
+      throw new NotFoundException();
+    };
+    const updatedDoctor = await this.prismaService.doctor.update({
+      where: { id },
+      data: {
+        ...updateDoctorDto,
+        schedule: JSON.stringify(updateDoctorDto.schedule),
+      },
+    });
+    updatedDoctor.password = undefined;
+    return updatedDoctor;
+  }
+
+  async partialUpdateDoctor(id: string, updateDoctorDto: UpdateDoctorDto) {
+    const doctor = await this.prismaService.doctor.findUnique({
+      where: { id },
+    });
+    if (!doctor) {
+      throw new NotFoundException();
+    };
+    const updatedDoctor = await this.prismaService.doctor.update({
+      where: { id },
+      data: {
+        ...updateDoctorDto,
+        schedule: JSON.stringify(updateDoctorDto.schedule),
+      },
+    });
+    updatedDoctor.password = undefined;
+    return updatedDoctor;
+  }
+
+  async deleteDoctor(id: string) {
+    const doctor = await this.prismaService.doctor.findUnique({
+      where: { id },
+    });
+    if (!doctor) {
+      throw new NotFoundException();
+    };
+    await this.prismaService.doctor.delete({
+      where: { id },
+    });
   }
 }

@@ -15,7 +15,7 @@ export class DoctorService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(loginDto: LoginDto) {
     const response = await this.prismaService.doctor.findFirst({

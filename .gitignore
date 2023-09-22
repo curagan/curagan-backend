@@ -3,6 +3,7 @@
 /node_modules
 message.txt
 .env
+.pnpm-lock.yaml
 
 # Logs
 logs

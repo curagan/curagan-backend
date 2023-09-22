@@ -7,7 +7,7 @@ import {
 import { CreatePatientDto, LoginPatient } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt/dist';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma/prisma.service'
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class PatientService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async register(registerDto: CreatePatientDto) {
     const isExist = await this.prismaService.patient.findFirst({

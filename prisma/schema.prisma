@@ -30,12 +30,13 @@ model Doctor {
 }
 
 model AppointmentPatientDoctor {
-    patient   Patient  @relation(fields: [patientID], references: [id])
-    patientID String
-    doctor    Doctor   @relation(fields: [doctorID], references: [id])
-    doctorID  String
-    datetime  DateTime
-    status    Status
+    appointmentId String   @unique @default(uuid())
+    patient       Patient  @relation(fields: [patientID], references: [id])
+    patientID     String
+    doctor        Doctor   @relation(fields: [doctorID], references: [id])
+    doctorID      String
+    datetime      DateTime
+    status        Status
 
     @@id([patientID, doctorID])
 }

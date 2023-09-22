@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Body,
+  Put,
   Patch,
   Param,
   Delete,
@@ -28,5 +29,25 @@ export class PatientController {
   @Get('/')
   getAllPatients() {
     return this.patientService.getAllPatients();
+  }
+
+  @Get('/:id')
+  getPatientById(@Param('id') id: string) {
+    return this.patientService.getPatientById(id);
+  }
+
+  @Put('/:id')
+  updatePatient(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
+    return this.patientService.updatePatient(id, updatePatientDto);
+  }
+
+  @Patch('/:id')
+  partialUpdatePatient(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
+    return this.patientService.partialUpdatePatient(id, updatePatientDto);
+  }
+
+  @Delete('/:id')
+  deletePatient(@Param('id') id: string) {
+    return this.patientService.deletePatient(id);
   }
 }

@@ -59,7 +59,7 @@ export class PatientService {
       algorithm: 'HS256',
     };
     return {
-      response: response.id,
+      response: response,
       access_token: await this.jwtService.signAsync(response, options),
     };
   }
@@ -70,5 +70,58 @@ export class PatientService {
       res.password = undefined;
     });
     return response;
+  }
+
+  async getPatientById(id: string) {
+    const patient = await this.prismaService.patient.findUnique({
+      where: { id },
+    });
+    if (!patient) {
+      throw new NotFoundException();
+    }
+    patient.password = undefined;
+    return patient;
+  }
+
+  async updatePatient(id: string, updatePatientDto: UpdatePatientDto) {
+    const patient = await this.prismaService.patient.findUnique({
+      where: { id },
+    });
+    if (!patient) {
+      throw new NotFoundException("Patient not found!");
+    };
+    const updatedPatient = await this.prismaService.patient.update({
+      where: { id },
+      data: updatePatientDto,
+    });
+    updatedPatient.password = undefined;
+    return updatedPatient;
+  }
+
+  async partialUpdatePatient(id: string, updatePatientDto: UpdatePatientDto) {
+    const patient = await this.prismaService.patient.findUnique({
+      where: { id },
+    });
+    if (!patient) {
+      throw new NotFoundException("Patient not found!");
+    };
+    const updatedPatient = await this.prismaService.patient.update({
+      where: { id },
+      data: updatePatientDto,
+    });
+    updatedPatient.password = undefined;
+    return updatedPatient;
+  }
+
+  async deletePatient(id: string) {
+    const patient = await this.prismaService.patient.findUnique({
+      where: { id },
+    });
+    if (!patient) {
+      throw new NotFoundException("Patient not found!");
+    };
+    await this.prismaService.patient.delete({
+      where: { id },
+    });
   }
 }

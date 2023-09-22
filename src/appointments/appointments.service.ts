@@ -53,5 +53,7 @@ export class AppointmentsService {
         status: UpdateAppointmentDto.status
       }
     })
+
+    return updatedAppointment
   }
 }

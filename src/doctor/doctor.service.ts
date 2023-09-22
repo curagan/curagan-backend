@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateDoctorDto, LoginDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
 

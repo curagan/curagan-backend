@@ -23,7 +23,7 @@ model Doctor {
     password       String
     name           String
     imageURL       String
-    loc            String
+    location       String
     hospital       String
     schedule       String
     appointment    AppointmentPatientDoctor[]

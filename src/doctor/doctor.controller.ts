@@ -1,10 +1,29 @@
-import { Controller, Post, Body, Get, UseGuards, Param, Put, Patch, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Param,
+  Put,
+  Patch,
+  Delete,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto, LoginDto } from './dto/create-doctor.dto';
-import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { ChangePassword, UpdateDoctorDto } from './dto/update-doctor.dto';
 import { AuthGuard, RoleGuard, Roles } from './doctor.guard';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { Doctor } from './entities/doctor.entity';
+import { Request } from 'express';
 
 @Controller('doctor')
 @ApiTags('doctor')
@@ -15,8 +34,8 @@ export class DoctorController {
   @Post('/auth/login')
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: Doctor })
-  login(@Body() loginDto: LoginDto) {
-    return this.doctorService.login(loginDto);
+  login(@Body() loginDto: LoginDto, @Req() req: Request) {
+    return this.doctorService.login(loginDto, req);
   }
 
   @Post('/auth/register')
@@ -25,21 +44,41 @@ export class DoctorController {
     return this.doctorService.register(registerDto);
   }
 
+  // FILTER DOCTOR BY NAME, LOCATION AND HOSPITAL
+  @Get('/query')
+  searchDoctor(
+    @Query('name') name: string,
+    @Query('location') location: string,
+    @Query('hospital') hospital: string,
+  ) {
+    const data = {
+      name: name,
+      location: location,
+      hospital: hospital,
+    };
+    return this.doctorService.searchDoctor(data);
+  }
+
   /// BASIC CRUD
   @Get('/')
   @UseGuards(RoleGuard)
-  @Roles('Doctor')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor, isArray: true })
-  @ApiQuery({name: 'q', description: 'search all doctors', required: false, type: String})
-  getAll(@Query('q') query: string) {
+  @ApiQuery({
+    name: 'q',
+    description: 'search all doctors',
+    required: false,
+    type: String,
+  })
+  getAll() {
     return this.doctorService.getAllDoctor();
   }
 
   @Get('/:id')
   @UseGuards(RoleGuard)
-  @Roles('Doctor')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor })
@@ -49,31 +88,45 @@ export class DoctorController {
 
   @Put('/:id')
   @UseGuards(RoleGuard)
-  @Roles('Doctor')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor })
-  updateDoctor(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
+  updateDoctor(
+    @Param('id') id: string,
+    @Body() updateDoctorDto: UpdateDoctorDto,
+  ) {
     return this.doctorService.updateDoctor(id, updateDoctorDto);
   }
 
   @Patch('/:id')
   @UseGuards(RoleGuard)
-  @Roles('Doctor')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor })
-  partialUpdateDoctor(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
+  partialUpdateDoctor(
+    @Param('id') id: string,
+    @Body() updateDoctorDto: UpdateDoctorDto,
+  ) {
     return this.doctorService.partialUpdateDoctor(id, updateDoctorDto);
   }
 
   @Delete('/:id')
   @UseGuards(RoleGuard)
-  @Roles('Doctor')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor })
   deleteDoctor(@Param('id') id: string) {
     return this.doctorService.deleteDoctor(id);
+  }
+
+  @Patch('/change-password/:id')
+  @UseGuards(RoleGuard)
+  @Roles('doctor')
+  @UseGuards(AuthGuard)
+  changePassword(@Param('id') id: string, @Body() data: ChangePassword) {
+    return this.doctorService.changePassword(id, data);
   }
 }

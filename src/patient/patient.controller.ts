@@ -7,14 +7,19 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { CreatePatientDto, LoginPatient } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Patient } from './entities/patient.entity';
-import { AuthGuard } from 'src/doctor/doctor.guard';
+import { AuthGuard } from '../doctor/doctor.guard';
 
 @Controller('patient')
 @ApiTags('patient')
@@ -54,7 +59,10 @@ export class PatientController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Patient })
-  updatePatient(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
+  updatePatient(
+    @Param('id') id: string,
+    @Body() updatePatientDto: UpdatePatientDto,
+  ) {
     return this.patientService.updatePatient(id, updatePatientDto);
   }
 
@@ -62,7 +70,10 @@ export class PatientController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Patient })
-  partialUpdatePatient(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
+  partialUpdatePatient(
+    @Param('id') id: string,
+    @Body() updatePatientDto: UpdatePatientDto,
+  ) {
     return this.patientService.partialUpdatePatient(id, updatePatientDto);
   }
 

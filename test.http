@@ -1,45 +1,61 @@
 ### REGISTER DOCTOR
-POST http://localhost:3000/doctor/auth/register
+POST http://localhost:4000/doctor/auth/register
 Content-Type: application/json
 
 {
   "email": "testing@email.com",
   "password": "doktertest",
-  "name": "halodek2",
+  "name": "halodek",
   "imageURL": "abc",
-  "loc": "jakarta",
+  "location": "jakarta",
   "hospital": "rscm",
   "schedule": [
     {
         "days": "senin",
-        "time": [9.00, 10.00]
+        "time": ["09.00", "10.00"]
     },
     {
         "days": "selasa",
-        "time": [9.00, 10.00]
+        "time": ["9.00", "10.00"]
     }
   ]
 }
 
 ### LOGIN FOR DOCTOR
-POST http://localhost:3000/doctor/auth/login
+POST http://localhost:4000/doctor/auth/login
 Content-Type: application/json
 
 {
-    "email": "testing2@email.com",
-    "password": "doktertest2"
+    "email": "testing@email.com",
+    "password": "dokteredan"
 }
 
 ### GET ALL DOCTOR
-GET http://localhost:3000/doctor
+GET http://localhost:4000/doctor
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkMWNjZWIzLTE2MDMtNGEzYS05N2I3LTViYTQ0MzY0N2Q0OCIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJzcGVjaWFsaXphdGlvbiI6IlVtdW0iLCJuYW1lIjoiaGFsb2RlayIsImltYWdlVVJMIjoiYWJjIiwibG9jYXRpb24iOiJqYWthcnRhIiwiaG9zcGl0YWwiOiJyc2NtIiwic2NoZWR1bGUiOiJbe1wiZGF5c1wiOlwic2VuaW5cIixcInRpbWVcIjpbXCIwOS4wMFwiLFwiMTAuMDBcIl19LHtcImRheXNcIjpcInNlbGFzYVwiLFwidGltZVwiOltcIjkuMDBcIixcIjEwLjAwXCJdfV0iLCJpYXQiOjE2OTU0NjM1NjcsImV4cCI6MTY5NTU0OTk2N30.FEv2Mrhy2Ie4s0_nPcxUR_W-gBA-YD2f6asEs-VzNFQ
+
+### GET ALL DOCTOR USING PATIENT'S TOKEN
+GET http://localhost:4000/doctor
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhYWNhMDRmLWQ3ZDctNDVlMC1hYmFkLTU3YzBkMGM0ZGNjOSIsImVtYWlsIjoicGF0aWVudDFAdGVzdGluZy5jb20iLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiaW1hZ2VVUkwiOiJzdHJpbmciLCJpYXQiOjE2OTUzODYxODAsImV4cCI6MTY5NTQ3MjU4MH0.O3qEA-bK60BtroqOFYSdbYivwSg03secwa3h8U-aqIE
+
+### FILTER DOCTOR
+GET http://localhost:4000/doctor/query?name=halo&location=jak&hospital=rs
 
 
+### CHANGE PASSWORD
+PATCH http://localhost:4000/doctor/change-password/5d1cceb3-1603-4a3a-97b7-5ba443647d48
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkMWNjZWIzLTE2MDMtNGEzYS05N2I3LTViYTQ0MzY0N2Q0OCIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJzcGVjaWFsaXphdGlvbiI6IlVtdW0iLCJuYW1lIjoiaGFsb2RlayIsImltYWdlVVJMIjoiYWJjIiwibG9jYXRpb24iOiJqYWthcnRhIiwiaG9zcGl0YWwiOiJyc2NtIiwic2NoZWR1bGUiOiJbe1wiZGF5c1wiOlwic2VuaW5cIixcInRpbWVcIjpbXCIwOS4wMFwiLFwiMTAuMDBcIl19LHtcImRheXNcIjpcInNlbGFzYVwiLFwidGltZVwiOltcIjkuMDBcIixcIjEwLjAwXCJdfV0iLCJpYXQiOjE2OTU0MDU5NjIsImV4cCI6MTY5NTQ5MjM2Mn0.iXdH379sT4qu_GdIuB6iDTicHj0rCAHGBcO09AeD5YI
+Content-Type: application/json
 
+{
+  "oldPassword": "doktertest",
+  "newPassword": "dokteredan"
+}
 
 ##################################################### PATIENT ############################################
 
 ### REGISTER
-POST http://localhost:3000/patient/auth/register
+POST https://curagan-api.nikenhpsr.site/patient/auth/register
 Content-Type: application/json
 
 {
@@ -51,7 +67,7 @@ Content-Type: application/json
 
 ### LOGIN FOR PATIENT
 
-POST http://localhost:3000/patient/auth/login
+POST https://curagan-api.nikenhpsr.site/patient/auth/login
 Content-Type: application/json
 
 {
@@ -60,8 +76,7 @@ Content-Type: application/json
 }
 
 ### GET ALL PATIENT
-GET http://localhost:3000/patient
+GET https://curagan-api.nikenhpsr.site/patient
 
-
-### SOCKET
-GET http://localhost:3000/status/1
+### GET
+GET http://localhost:4000/doctor/abc?loc=jalan

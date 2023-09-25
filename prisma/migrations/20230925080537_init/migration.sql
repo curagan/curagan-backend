@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Specialization" AS ENUM ('Umum', 'Jantung', 'Kulit', 'Lambung', 'Darah');
+CREATE TYPE "Specialization" AS ENUM ('Umum', 'Jantung', 'Kulit', 'Lambung', 'Darah', 'Penyakit_Menular', 'Ginjal', 'Saraf', 'Kandungan', 'Kanker', 'Mata', 'Tulang', 'THT', 'Anak', 'Jiwa', 'Paru_Paru', 'Radiologi', 'Rematologi', 'Urologi', 'Bedah_Umum');
 
 -- CreateEnum
 CREATE TYPE "Status" AS ENUM ('Pending', 'Submitted', 'Accepted', 'Rejected', 'Done');
@@ -9,8 +9,7 @@ CREATE TABLE "Patient" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "imageURL" TEXT NOT NULL,
 
     CONSTRAINT "Patient_pkey" PRIMARY KEY ("id")
@@ -20,23 +19,26 @@ CREATE TABLE "Patient" (
 CREATE TABLE "Doctor" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "spesialisasi" "Specialization" NOT NULL,
+    "specialization" TEXT NOT NULL DEFAULT 'Umum',
     "password" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "imageURL" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
+    "hospital" TEXT NOT NULL,
+    "schedule" TEXT NOT NULL,
 
     CONSTRAINT "Doctor_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "AppointmentPatientDoctor" (
+    "appointmentId" TEXT NOT NULL,
     "patientID" TEXT NOT NULL,
     "doctorID" TEXT NOT NULL,
     "datetime" TIMESTAMP(3) NOT NULL,
     "status" "Status" NOT NULL,
 
-    CONSTRAINT "AppointmentPatientDoctor_pkey" PRIMARY KEY ("patientID","doctorID")
+    CONSTRAINT "AppointmentPatientDoctor_pkey" PRIMARY KEY ("appointmentId")
 );
 
 -- CreateIndex

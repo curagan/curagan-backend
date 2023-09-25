@@ -5,9 +5,9 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Query,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
@@ -24,33 +24,31 @@ import { AuthGuard, RoleGuard, Roles } from '../doctor/doctor.guard';
 @Controller('appointments')
 @ApiTags('appointments')
 export class AppointmentsController {
-  constructor(private readonly AppointmentsService: AppointmentsService) {}
+  constructor(private readonly AppointmentsService: AppointmentsService) { }
 
   @Post()
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: Appointment })
-  @UseGuards(RoleGuard)
-  @Roles('doctor')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles('patient')
   create(@Body() CreateAppointmentDto: CreateAppointmentDto) {
     return this.AppointmentsService.create(CreateAppointmentDto);
   }
 
-  @Get()
+  @Get('/my-appointments/:id')
   @ApiBearerAuth()
   @ApiOkResponse({ type: Appointment, isArray: true })
-  @UseGuards(RoleGuard)
-  @Roles('doctor')
-  @UseGuards(AuthGuard)
-  findAll() {
-    return this.AppointmentsService.findAll();
+  @UseGuards(AuthGuard, RoleGuard)
+  findAppointments(@Param('id') id: string, @Req() req) {
+    return this.AppointmentsService.findAppointments(id, req.user.role);
   }
+
 
   @Get(':id')
   @ApiBearerAuth()
   @ApiOkResponse({ type: Appointment })
   @UseGuards(RoleGuard)
-  @Roles('doctor')
+  @Roles('doctor', 'patient')
   @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.AppointmentsService.findOne(id);
@@ -71,7 +69,7 @@ export class AppointmentsController {
 
   @Get('/history/:doctorId/')
   @UseGuards(RoleGuard)
-  @Roles('doctor')
+  @Roles('doctor', 'patient')
   @UseGuards(AuthGuard)
   getHistory(
     @Query('start') start: string,

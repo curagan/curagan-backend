@@ -24,7 +24,7 @@ import { AuthGuard } from '../doctor/doctor.guard';
 @Controller('patient')
 @ApiTags('patient')
 export class PatientController {
-  constructor(private readonly patientService: PatientService) {}
+  constructor(private readonly patientService: PatientService) { }
 
   @Post('/auth/register')
   @ApiCreatedResponse({ type: Patient })

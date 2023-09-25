@@ -33,6 +33,7 @@ export class PatientService {
           registerDto.password,
           Number(process.env['HASH_SALT']),
         ),
+        role: 'patient',
       },
     });
     newUser.password = undefined;

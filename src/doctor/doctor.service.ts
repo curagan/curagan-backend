@@ -76,6 +76,7 @@ export class DoctorService {
           createDoctorDto.password,
           Number(process.env['HASH_SALT']),
         ),
+        role: 'doctor',
       },
     });
     newDoctor.password = undefined;

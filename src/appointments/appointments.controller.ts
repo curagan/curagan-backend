@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
@@ -28,22 +29,20 @@ export class AppointmentsController {
   @Post()
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: Appointment })
-  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Roles('patient')
-  @UseGuards(AuthGuard)
   create(@Body() CreateAppointmentDto: CreateAppointmentDto) {
     return this.AppointmentsService.create(CreateAppointmentDto);
   }
 
-  @Get()
+  @Get('/my-appointments/:id')
   @ApiBearerAuth()
   @ApiOkResponse({ type: Appointment, isArray: true })
-  @UseGuards(RoleGuard)
-  @Roles('doctor', 'patient')
-  @UseGuards(AuthGuard)
-  findAll() {
-    return this.AppointmentsService.findAll();
+  @UseGuards(AuthGuard, RoleGuard)
+  findAppointments(@Param('id') id: string, @Req() req) {
+    return this.AppointmentsService.findAppointments(id, req.user.role);
   }
+
 
   @Get(':id')
   @ApiBearerAuth()

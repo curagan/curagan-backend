@@ -5,23 +5,43 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AppointmentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createAppointmentDto: CreateAppointmentDto) {
-    const { patientId, doctorId, datetime, status } = createAppointmentDto;
+    const { patientID, doctorID, datetime, status } = createAppointmentDto;
 
     return this.prisma.appointmentPatientDoctor.create({
       data: {
-        patient: { connect: { id: patientId } },
-        doctor: { connect: { id: doctorId } },
+        patient: { connect: { id: patientID } },
+        doctor: { connect: { id: doctorID } },
         datetime,
         status,
       },
     });
   }
 
-  async findAll() {
-    return this.prisma.appointmentPatientDoctor.findMany();
+  // async findPatientAppointments(patientID: string) {
+  //   return await this.prisma.appointmentPatientDoctor.findMany({
+  //     where: {
+  //       patientID: patientID
+  //     }
+  //   });
+  // }
+
+  async findAppointments(id: string, role: string) {
+    if (role === 'doctor') {
+      return await this.prisma.appointmentPatientDoctor.findMany({
+        where: {
+          doctorID: id
+        }
+      });
+    } else if (role === 'patient') {
+      return await this.prisma.appointmentPatientDoctor.findMany({
+        where: {
+          patientID: id
+        }
+      });
+    }
   }
 
   async findOne(appointmentId: string) {

@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { Console } from 'console';
 import { Request } from 'express';
 
 export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
@@ -54,11 +55,13 @@ export class RoleGuard implements CanActivate {
       // If no roles are specified, allow access by default
       return true;
     }
+
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    if (!allowedRoles.includes(user.role)) {
-      throw new ForbiddenException('You are not allowed to modify the data!');
+    if (user && user.role && (allowedRoles.includes(user.role))) {
+      return true; // User has either 'doctor' or 'patient' role
     }
-    return allowedRoles.includes(user.role);
+
+    throw new ForbiddenException('You are not allowed to modify the data!');
   }
 }

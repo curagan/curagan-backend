@@ -52,7 +52,8 @@ export class DoctorService {
     const token = await this.generateToken(response);
     req['role'] = 'doctor';
     return {
-      response: response.id,
+      id: response.id,
+      role: 'doctor',
       access_token: token,
     };
   }
@@ -106,44 +107,33 @@ export class DoctorService {
     const doctor = await this.prismaService.doctor.findUnique({
       where: { id: id },
     });
+    const updatedData = {
+      email: updateDoctorDto.email || doctor.email,
+      name: updateDoctorDto.name || doctor.name,
+      imageUrl: updateDoctorDto.imageURL || doctor.imageURL,
+      hospital: updateDoctorDto.hospital || doctor.hospital,
+      schedule: JSON.stringify([updateDoctorDto.schedule]) || doctor.schedule,
+    };
     if (!doctor) {
       throw new NotFoundException();
     }
     const updatedDoctor = await this.prismaService.doctor.update({
       where: { id: id },
-      data: {
-        ...updateDoctorDto,
-        schedule: JSON.stringify(updateDoctorDto.schedule),
-      },
+      data: updatedData,
     });
     updatedDoctor.password = undefined;
     return updatedDoctor;
   }
 
-  async partialUpdateDoctor(id: string, updateDoctorDto: UpdateDoctorDto) {
-    const doctor = await this.prismaService.doctor.findUnique({
-      where: { id: id },
-    });
-    if (!doctor) {
-      throw new NotFoundException();
-    }
-    const updatedDoctor = await this.prismaService.doctor.update({
-      where: { id: id },
-      data: {
-        ...updateDoctorDto,
-        schedule: JSON.stringify(updateDoctorDto.schedule),
-      },
-    });
-    updatedDoctor.password = undefined;
-    return updatedDoctor;
-  }
-
-  async deleteDoctor(id: string) {
+  async deleteDoctor(id: string, req: Request) {
     const doctor = await this.prismaService.doctor.findUnique({
       where: { id },
     });
     if (!doctor) {
       throw new NotFoundException();
+    }
+    if (id !== req['user'].sub) {
+      throw new UnauthorizedException();
     }
     await this.prismaService.doctor.delete({
       where: { id },
@@ -178,7 +168,7 @@ export class DoctorService {
     return response;
   }
 
-  async changePassword(id: string, data: ChangePassword) {
+  async changePassword(id: string, data: ChangePassword, req: Request) {
     const response = await this.prismaService.doctor.findFirst({
       where: {
         id: id,
@@ -186,6 +176,9 @@ export class DoctorService {
     });
     const isMatch = bcrypt.compareSync(data.oldPassword, response.password);
     if (!isMatch) {
+      throw new UnauthorizedException();
+    }
+    if (id !== req['user'].sub) {
       throw new UnauthorizedException();
     }
     const changed = await this.prismaService.doctor.update({

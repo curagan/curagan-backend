@@ -97,34 +97,25 @@ export class DoctorController {
     return this.doctorService.updateDoctor(id, updateDoctorDto);
   }
 
-  @Patch('/:id')
-  @UseGuards(RoleGuard)
-  @Roles('doctor')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: Doctor })
-  partialUpdateDoctor(
-    @Param('id') id: string,
-    @Body() updateDoctorDto: UpdateDoctorDto,
-  ) {
-    return this.doctorService.partialUpdateDoctor(id, updateDoctorDto);
-  }
-
   @Delete('/:id')
   @UseGuards(RoleGuard)
   @Roles('doctor')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor })
-  deleteDoctor(@Param('id') id: string) {
-    return this.doctorService.deleteDoctor(id);
+  deleteDoctor(@Param('id') id: string, @Req() req: Request) {
+    return this.doctorService.deleteDoctor(id, req);
   }
 
   @Patch('/change-password/:id')
   @UseGuards(RoleGuard)
   @Roles('doctor')
   @UseGuards(AuthGuard)
-  changePassword(@Param('id') id: string, @Body() data: ChangePassword) {
-    return this.doctorService.changePassword(id, data);
+  changePassword(
+    @Param('id') id: string,
+    @Body() data: ChangePassword,
+    @Req() req: Request,
+  ) {
+    return this.doctorService.changePassword(id, data, req);
   }
 }

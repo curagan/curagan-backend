@@ -111,7 +111,7 @@ export class DoctorService {
     const updatedData = {
       email: updateDoctorDto.email || doctor.email,
       name: updateDoctorDto.name || doctor.name,
-      imageUrl: updateDoctorDto.imageURL || doctor.imageURL,
+      imageURL: updateDoctorDto.imageURL || doctor.imageURL,
       hospital: updateDoctorDto.hospital || doctor.hospital,
       schedule: JSON.stringify([updateDoctorDto.schedule]) || doctor.schedule,
     };

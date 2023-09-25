@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { Console } from 'console';
 import { Request } from 'express';
 
 export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
@@ -36,8 +35,10 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    const authHeader = request.headers.authorization;
+    const [scheme, token] = authHeader ? authHeader.split(' ') : [];
+
+    return scheme === 'Bearer' ? token : undefined;
   }
 }
 

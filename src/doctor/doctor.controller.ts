@@ -30,7 +30,6 @@ export class DoctorController {
   @UseGuards(RoleGuard)
   @Roles('Doctor')
   @UseGuards(AuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor, isArray: true })
   @ApiQuery({name: 'q', description: 'search all doctors', required: false, type: String})
   getAll(@Query('q') query: string) {
@@ -41,7 +40,6 @@ export class DoctorController {
   @UseGuards(RoleGuard)
   @Roles('Doctor')
   @UseGuards(AuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ type: Doctor })
   getDoctorById(@Param('id') id: string) {
     return this.doctorService.getDoctorById(id);

@@ -4,20 +4,38 @@ import {
   UnauthorizedException,
   ConflictException,
 } from '@nestjs/common';
-import { CreateDoctorDto, LoginDto } from './dto/create-doctor.dto';
-import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { CreateDoctorDto, LoginDto, DoctorDto, SearchDoctor } from './dto/create-doctor.dto';
+import { UpdateDoctorDto, ChangePassword } from './dto/update-doctor.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class DoctorService {
   constructor(
-    private prismaService: PrismaService,
+    private readonly prismaService: PrismaService,
     private jwtService: JwtService,
   ) { }
 
-  async login(loginDto: LoginDto) {
+  private async generateToken(data: DoctorDto) {
+    const payload = {
+      sub: data.id,
+      name: data.name,
+      email: data.email,
+      role: 'doctor',
+    };
+    const options: JwtSignOptions = {
+      secret: process.env.JWT_KEY,
+      expiresIn: '24h',
+      algorithm: 'HS256',
+    };
+    const token = await this.jwtService.signAsync(payload, options);
+    return token;
+  }
+
+  // AUTH API
+  async login(loginDto: LoginDto, req: Request) {
     const response = await this.prismaService.doctor.findFirst({
       where: {
         email: loginDto.email,
@@ -31,14 +49,11 @@ export class DoctorService {
       throw new UnauthorizedException();
     }
     response.password = undefined;
-    const options: JwtSignOptions = {
-      secret: process.env['JWT_KEY'],
-      expiresIn: '24h',
-      algorithm: 'HS256',
-    };
+    const token = await this.generateToken(response);
+    req['role'] = 'doctor';
     return {
       response: response.id,
-      access_token: await this.jwtService.signAsync(response, options),
+      access_token: token,
     };
   }
 
@@ -66,6 +81,8 @@ export class DoctorService {
     return newDoctor;
   }
 
+  // BASIC CRUD
+
   async getAllDoctor() {
     const response = await this.prismaService.doctor.findMany();
     response.map((res) => {
@@ -76,7 +93,7 @@ export class DoctorService {
 
   async getDoctorById(id: string) {
     const doctor = await this.prismaService.doctor.findUnique({
-      where: { id },
+      where: { id: id },
     });
     if (!doctor) {
       throw new NotFoundException();
@@ -87,13 +104,13 @@ export class DoctorService {
 
   async updateDoctor(id: string, updateDoctorDto: UpdateDoctorDto) {
     const doctor = await this.prismaService.doctor.findUnique({
-      where: { id },
+      where: { id: id },
     });
     if (!doctor) {
       throw new NotFoundException();
-    };
+    }
     const updatedDoctor = await this.prismaService.doctor.update({
-      where: { id },
+      where: { id: id },
       data: {
         ...updateDoctorDto,
         schedule: JSON.stringify(updateDoctorDto.schedule),
@@ -105,13 +122,13 @@ export class DoctorService {
 
   async partialUpdateDoctor(id: string, updateDoctorDto: UpdateDoctorDto) {
     const doctor = await this.prismaService.doctor.findUnique({
-      where: { id },
+      where: { id: id },
     });
     if (!doctor) {
       throw new NotFoundException();
-    };
+    }
     const updatedDoctor = await this.prismaService.doctor.update({
-      where: { id },
+      where: { id: id },
       data: {
         ...updateDoctorDto,
         schedule: JSON.stringify(updateDoctorDto.schedule),
@@ -127,9 +144,62 @@ export class DoctorService {
     });
     if (!doctor) {
       throw new NotFoundException();
-    };
+    }
     await this.prismaService.doctor.delete({
       where: { id },
     });
+  }
+
+  async searchDoctor(data: SearchDoctor) {
+    const response = await this.prismaService.doctor.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: String(data.name).toLowerCase(),
+            },
+          },
+          {
+            location: {
+              contains: String(data.location).toLowerCase(),
+            },
+          },
+          {
+            hospital: {
+              contains: String(data.hospital).toLowerCase(),
+            },
+          },
+        ],
+      },
+    });
+    if (!response) {
+      throw new NotFoundException();
+    }
+    return response;
+  }
+
+  async changePassword(id: string, data: ChangePassword) {
+    const response = await this.prismaService.doctor.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    const isMatch = bcrypt.compareSync(data.oldPassword, response.password);
+    if (!isMatch) {
+      throw new UnauthorizedException();
+    }
+    const changed = await this.prismaService.doctor.update({
+      where: {
+        id: id,
+      },
+      data: {
+        password: bcrypt.hashSync(
+          data.newPassword,
+          Number(process.env['HASH_SALT']),
+        ),
+      },
+    });
+    changed.password = undefined;
+    return changed;
   }
 }

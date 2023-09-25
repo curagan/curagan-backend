@@ -1,45 +1,60 @@
 ### REGISTER DOCTOR
-POST http://localhost:3000/doctor/auth/register
+POST http://localhost:4000/doctor/auth/register
 Content-Type: application/json
 
 {
-  "email": "testing@email.com",
+  "email": "testing1@email.com",
   "password": "doktertest",
-  "name": "halodek2",
+  "name": "bambang",
   "imageURL": "abc",
-  "loc": "jakarta",
-  "hospital": "rscm",
+  "location": "surabaya",
+  "hospital": "rsud",
   "schedule": [
     {
         "days": "senin",
-        "time": [9.00, 10.00]
+        "time": ["09.00", "10.00"]
     },
     {
         "days": "selasa",
-        "time": [9.00, 10.00]
+        "time": ["9.00", "10.00"]
     }
   ]
 }
 
 ### LOGIN FOR DOCTOR
-POST http://localhost:3000/doctor/auth/login
+POST http://localhost:4000/doctor/auth/login
 Content-Type: application/json
 
 {
-    "email": "testing2@email.com",
-    "password": "doktertest2"
+    "email": "testing1@email.com",
+    "password": "doktertest"
 }
 
 ### GET ALL DOCTOR
-GET http://localhost:3000/doctor
+GET http://localhost:4000/doctor
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDFjY2ViMy0xNjAzLTRhM2EtOTdiNy01YmE0NDM2NDdkNDgiLCJuYW1lIjoiaGFsb2RlayIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1NTI5NDU2LCJleHAiOjE2OTU2MTU4NTZ9.mRlmFhWxZ4BXnRhQ8D9ceCPwmpfZEW1mfourCObvzB0
+### GET ALL DOCTOR USING PATIENT'S TOKEN
+GET http://localhost:4000/doctor
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhYWNhMDRmLWQ3ZDctNDVlMC1hYmFkLTU3YzBkMGM0ZGNjOSIsImVtYWlsIjoicGF0aWVudDFAdGVzdGluZy5jb20iLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiaW1hZ2VVUkwiOiJzdHJpbmciLCJpYXQiOjE2OTUzODYxODAsImV4cCI6MTY5NTQ3MjU4MH0.O3qEA-bK60BtroqOFYSdbYivwSg03secwa3h8U-aqIE
+
+### FILTER DOCTOR
+GET http://localhost:4000/doctor/query?name=halo&location=surabaya
 
 
+### CHANGE PASSWORD
+PATCH http://localhost:4000/doctor/change-password/5d1cceb3-1603-4a3a-97b7-5ba443647d48
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkMWNjZWIzLTE2MDMtNGEzYS05N2I3LTViYTQ0MzY0N2Q0OCIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJzcGVjaWFsaXphdGlvbiI6IlVtdW0iLCJuYW1lIjoiaGFsb2RlayIsImltYWdlVVJMIjoiYWJjIiwibG9jYXRpb24iOiJqYWthcnRhIiwiaG9zcGl0YWwiOiJyc2NtIiwic2NoZWR1bGUiOiJbe1wiZGF5c1wiOlwic2VuaW5cIixcInRpbWVcIjpbXCIwOS4wMFwiLFwiMTAuMDBcIl19LHtcImRheXNcIjpcInNlbGFzYVwiLFwidGltZVwiOltcIjkuMDBcIixcIjEwLjAwXCJdfV0iLCJpYXQiOjE2OTU0MDU5NjIsImV4cCI6MTY5NTQ5MjM2Mn0.iXdH379sT4qu_GdIuB6iDTicHj0rCAHGBcO09AeD5YI
+Content-Type: application/json
 
+{
+  "oldPassword": "doktertest",
+  "newPassword": "dokteredan"
+}
 
 ##################################################### PATIENT ############################################
 
 ### REGISTER
-POST http://localhost:3000/patient/auth/register
+POST http://localhost:4000/patient/auth/register
 Content-Type: application/json
 
 {
@@ -51,7 +66,7 @@ Content-Type: application/json
 
 ### LOGIN FOR PATIENT
 
-POST http://localhost:3000/patient/auth/login
+POST http://localhost:4000/patient/auth/login
 Content-Type: application/json
 
 {
@@ -60,8 +75,28 @@ Content-Type: application/json
 }
 
 ### GET ALL PATIENT
-GET http://localhost:3000/patient
+GET https://curagan-api.nikenhpsr.site/patient
 
+### GET
+GET http://localhost:4000/doctor/abc?loc=jalan
 
-### SOCKET
-GET http://localhost:3000/status/1
+################################# APPOINTMENT #################################
+
+### CREATE APPOINTMENT
+POST http://localhost:4000/appointments
+Content-Type: application/json
+
+{
+  "patientId": "f4d11a44-f08d-4555-9da1-591be0b7556d",
+  "doctorId":"5d1cceb3-1603-4a3a-97b7-5ba443647d48",
+  "datetime": "2023-08-23T09:43:19.187Z",
+  "status": "Done"
+}
+
+### GET APPOINTMENT HISTORY USING DOCTOR'S TOKEN
+GET http://localhost:4000/appointments/history/5d1cceb3-1603-4a3a-97b7-5ba443647d48?start=2023-09-01&end=2023-09-30
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMWI3OGZjYy0yYWRiLTQ5OWYtYWY4Ni0xOTc1M2JhNmMxMzIiLCJuYW1lIjoiYmFtYmFuZyIsImVtYWlsIjoidGVzdGluZzFAZW1haWwuY29tIiwicm9sZSI6ImRvY3RvciIsImlhdCI6MTY5NTU0OTA4NSwiZXhwIjoxNjk1NjM1NDg1fQ.LIxX1BQTZKGg0LI1zSGnRIypxALXky7NFdRwHZSPOmA
+
+### GET APPOINTMENT HISTORY BY DOCTOR'S TOKEN
+GET http://localhost:4000/appointments/history/5d1cceb3-1603-4a3a-97b7-5ba443647d48?start=2023-09-01&end=2023-09-30
+Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY0ZDExYTQ0LWYwOGQtNDU1NS05ZGExLTU5MWJlMGI3NTU2ZCIsImVtYWlsIjoicGF0aWVudDFAdGVzdGluZy5jb20iLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiaW1hZ2VVUkwiOiJzdHJpbmciLCJpYXQiOjE2OTU1NDkxMzEsImV4cCI6MTY5NTYzNTUzMX0.opToQIVLzTVl7Pc42Qh_1rwzlCNs4aushrRQo5JPpZk

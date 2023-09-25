@@ -23,22 +23,20 @@ model Doctor {
     password       String
     name           String
     imageURL       String
-    loc            String
+    location       String
     hospital       String
     schedule       String
     appointment    AppointmentPatientDoctor[]
 }
 
 model AppointmentPatientDoctor {
-    appointmentId String   @unique @default(uuid())
+    appointmentId String   @id @default(uuid())
     patient       Patient  @relation(fields: [patientID], references: [id])
     patientID     String
     doctor        Doctor   @relation(fields: [doctorID], references: [id])
     doctorID      String
     datetime      DateTime
     status        Status
-
-    @@id([patientID, doctorID])
 }
 
 enum Specialization {

@@ -50,20 +50,15 @@ export class RoleGuard implements CanActivate {
       'roles',
       context.getHandler(),
     );
-
     if (!allowedRoles) {
       // If no roles are specified, allow access by default
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    request.body && request.user.specialization
-      ? (request.role = 'Doctor')
-      : (request.role = 'Patient');
     const user = request.user;
-    console.log(user);
-    if (!user) {
+    if (!allowedRoles.includes(user.role)) {
       throw new ForbiddenException('You are not allowed to modify the data!');
     }
-    return allowedRoles.includes(request.role);
+    return allowedRoles.includes(user.role);
   }
 }

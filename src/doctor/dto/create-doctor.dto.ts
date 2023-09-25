@@ -27,7 +27,7 @@ export class CreateDoctorDto {
   password: string;
   name: string;
   imageURL: string;
-  loc: string;
+  location: string;
   hospital: string;
   schedule: Schedule[];
 }
@@ -39,4 +39,21 @@ interface Schedule {
 export class LoginDto {
   email: string;
   password: string;
+}
+
+export class SearchDoctor {
+  name: string;
+  location: string;
+  hospital: string;
+}
+
+export class DoctorDto {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  imageURL: string;
+  location: string;
+  hospital: string;
+  schedule: string;
 }

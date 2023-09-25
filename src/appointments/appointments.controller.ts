@@ -39,7 +39,7 @@ export class AppointmentsController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: Appointment, isArray: true })
   @UseGuards(RoleGuard)
-  @Roles('doctor', 'patient')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   findAll() {
     return this.AppointmentsService.findAll();
@@ -49,7 +49,7 @@ export class AppointmentsController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: Appointment })
   @UseGuards(RoleGuard)
-  @Roles('doctor', 'patient')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.AppointmentsService.findOne(id);
@@ -70,7 +70,7 @@ export class AppointmentsController {
 
   @Get('/history/:doctorId/')
   @UseGuards(RoleGuard)
-  @Roles('doctor', 'patient')
+  @Roles('doctor')
   @UseGuards(AuthGuard)
   getHistory(
     @Query('start') start: string,

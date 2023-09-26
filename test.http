@@ -3,22 +3,12 @@ POST http://localhost:4000/doctor/auth/register
 Content-Type: application/json
 
 {
-  "email": "testing2@email.com",
+  "email": "testing@email.com",
   "password": "doktertest",
   "name": "bambang",
   "imageURL": "abc",
   "location": "surabaya",
-  "hospital": "rsud",
-  "schedule": [
-    {
-        "days": "senin",
-        "time": ["09.00", "10.00"]
-    },
-    {
-        "days": "selasa",
-        "time": ["9.00", "10.00"]
-    }
-  ]
+  "hospital": "rsud"
 }
 
 ### LOGIN FOR DOCTOR
@@ -26,7 +16,7 @@ POST http://localhost:4000/doctor/auth/login
 Content-Type: application/json
 
 {
-    "email": "testing1@email.com",
+    "email": "testing@email.com",
     "password": "doktertest"
 }
 
@@ -42,14 +32,18 @@ GET http://localhost:4000/doctor/query?location=surabaya
 
 
 ### CHANGE PASSWORD
-PATCH http://localhost:4000/doctor/change-password/fe72ccf3-c9df-40e4-b8d3-28240785342c
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmZTcyY2NmMy1jOWRmLTQwZTQtYjhkMy0yODI0MDc4NTM0MmMiLCJuYW1lIjoiZG9rdGVydGVzdCIsImVtYWlsIjoidGVzdGluZzFAZW1haWwuY29tIiwicm9sZSI6ImRvY3RvciIsImlhdCI6MTY5NTY1MDk2MCwiZXhwIjoxNjk1NzM3MzYwfQ.SvOSvffl-hI3IeoF8jOdtRERsRh29NR-2w5Jk1LcBhg
+PATCH http://localhost:4000/doctor/change-password/bd788478-513d-4a09-812e-f1c078f32144
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZDc4ODQ3OC01MTNkLTRhMDktODEyZS1mMWMwNzhmMzIxNDQiLCJuYW1lIjoiZG9rdGVydGVzdCIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1NjUzNzMxLCJleHAiOjE2OTU3NDAxMzF9.N2IbbW65LGjfK0xR42UApjpdsMyd9pWTlwLnwmAifao
 Content-Type: application/json
 
 {
-  "oldPassword": "doktertest",
-  "newPassword": "dokteredan"
+  "oldPassword": "newpassworddoctor",
+  "newPassword": "doktertest"
 }
+
+### DELETE DOCTOR
+DELETE http://localhost:4000/doctor/bd788478-513d-4a09-812e-f1c078f32144
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZDc4ODQ3OC01MTNkLTRhMDktODEyZS1mMWMwNzhmMzIxNDQiLCJuYW1lIjoiZG9rdGVydGVzdCIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1NzMwOTUyLCJleHAiOjE2OTU4MTczNTJ9.JSACi58i_9qxKssmGbWZtopqmyvcLwxtZ-0vaCj0Hfg
 
 ##################################################### PATIENT ############################################
 
@@ -70,15 +64,28 @@ POST http://localhost:4000/patient/auth/login
 Content-Type: application/json
 
 {
-  "email": "patient1@testing.com",
+  "email": "patient@testing.com",
   "password": "patienttest"
 }
 
 ### GET ALL PATIENT
-GET https://curagan-api.nikenhpsr.site/patient
+GET http://localhost:4000/patient
 
-### GET
-GET http://localhost:4000/doctor/abc?loc=jalan
+### GET BY ID
+GET http://localhost:4000/patient/71458758-ba61-4e60-bc0c-8ccbec5adf7a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTQ1ODc1OC1iYTYxLTRlNjAtYmMwYy04Y2NiZWM1YWRmN2EiLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiZW1haWwiOiJwYXRpZW50MUB0ZXN0aW5nLmNvbSIsInJvbGUiOiJkb2N0b3IiLCJpYXQiOjE2OTU3MjM1OTEsImV4cCI6MTY5NTgwOTk5MX0.ek13DvbpswIEO1lbWqZvsEg7wcxm6rboCAbnrrMHlT0
+
+### CHANGE PASSWORD
+
+PATCH http://localhost:4000/patient/change-password/d88a1412-bef7-4e02-a654-d07c5e650861
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkODhhMTQxMi1iZWY3LTRlMDItYTY1NC1kMDdjNWU2NTA4NjEiLCJuYW1lIjoiaGVsbG8gbmV3IHBhdGllbnQiLCJlbWFpbCI6InBhdGllbnRAdGVzdGluZy5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1NzMwMTcyLCJleHAiOjE2OTU4MTY1NzJ9.Om_2p7tHnXJiTQOfbP7cHrNc4NQvNBvGzDUcSyjfb-Q
+Content-Type: application/json
+
+{
+  "oldPassword": "newpatient",
+  "newPassword": "patienttest"
+}
+
 
 ################################# APPOINTMENT #################################
 
@@ -90,12 +97,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOTM0ZjFjM
 {
   "patientId": "71458758-ba61-4e60-bc0c-8ccbec5adf7a",
   "doctorId":"bd788478-513d-4a09-812e-f1c078f32144",
-  "datetime": "2023-08-23T09:43:19.187Z",
+  "datetime": "2023-08-12T10:43:19.187Z",
   "status": "Done"
 }
 
 ### GET APPOINTMENT HISTORY USING DOCTOR'S TOKEN
-GET http://localhost:4000/appointments/history/bd788478-513d-4a09-812e-f1c078f32144?start=2023-08-01&end=2023-08-30
+GET http://localhost:4000/appointments/history/bd788478-513d-4a09-812e-f1c078f32144?start=2023-8-01&end=2023-8-31
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOTM0ZjFjMS01NDJjLTQ1OWYtYjdmMy03OGMzMjhhN2VhYTgiLCJuYW1lIjoiZG9rdGVydGVzdCIsImVtYWlsIjoidGVzdGluZzJAZW1haWwuY29tIiwicm9sZSI6ImRvY3RvciIsImlhdCI6MTY5NTY0ODY4NywiZXhwIjoxNjk1NzM1MDg3fQ.wTNmB2ZbOAz9g7L61qiBdQiQdvPoDBoaLavWn2EBHxg
 
 ### GET APPOINTMENT HISTORY BY DOCTOR'S TOKEN

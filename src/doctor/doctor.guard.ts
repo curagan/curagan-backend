@@ -14,7 +14,7 @@ export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) { }
+  constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -26,7 +26,6 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env['JWT_KEY'],
       });
-
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException();
@@ -44,7 +43,7 @@ export class AuthGuard implements CanActivate {
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) { }
+  constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
     // Get the roles allowed for the current route or method
@@ -59,7 +58,7 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    if (user && user.role && (allowedRoles.includes(user.role))) {
+    if (user && user.role && allowedRoles.includes(user.role)) {
       return true; // User has either 'doctor' or 'patient' role
     }
 

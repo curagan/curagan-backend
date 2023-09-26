@@ -8,10 +8,11 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { CreatePatientDto, LoginPatient } from './dto/create-patient.dto';
-import { UpdatePatientDto } from './dto/update-patient.dto';
+import { ChangePassword, UpdatePatientDto } from './dto/update-patient.dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -20,11 +21,12 @@ import {
 } from '@nestjs/swagger';
 import { Patient } from './entities/patient.entity';
 import { AuthGuard } from '../doctor/doctor.guard';
+import { Request } from 'express';
 
 @Controller('patient')
 @ApiTags('patient')
 export class PatientController {
-  constructor(private readonly patientService: PatientService) { }
+  constructor(private readonly patientService: PatientService) {}
 
   @Post('/auth/register')
   @ApiCreatedResponse({ type: Patient })
@@ -66,22 +68,21 @@ export class PatientController {
     return this.patientService.updatePatient(id, updatePatientDto);
   }
 
-  @Patch('/:id')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: Patient })
-  partialUpdatePatient(
-    @Param('id') id: string,
-    @Body() updatePatientDto: UpdatePatientDto,
-  ) {
-    return this.patientService.partialUpdatePatient(id, updatePatientDto);
-  }
-
   @Delete('/:id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Patient })
   deletePatient(@Param('id') id: string) {
     return this.patientService.deletePatient(id);
+  }
+
+  @Patch('/change-password/:id')
+  @UseGuards(AuthGuard)
+  changePassword(
+    @Param('id') id: string,
+    @Body() data: ChangePassword,
+    @Req() req: Request,
+  ) {
+    return this.patientService.changePassword(id, data, req);
   }
 }

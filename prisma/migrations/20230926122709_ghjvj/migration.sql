@@ -25,7 +25,7 @@ CREATE TABLE "Doctor" (
     "imageURL" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "hospital" TEXT NOT NULL,
-    "schedule" TEXT NOT NULL,
+    "schedule" TEXT,
 
     CONSTRAINT "Doctor_pkey" PRIMARY KEY ("id")
 );
@@ -33,8 +33,8 @@ CREATE TABLE "Doctor" (
 -- CreateTable
 CREATE TABLE "AppointmentPatientDoctor" (
     "appointmentId" TEXT NOT NULL,
-    "patientID" TEXT NOT NULL,
-    "doctorID" TEXT NOT NULL,
+    "patientID" TEXT,
+    "doctorID" TEXT,
     "datetime" TIMESTAMP(3) NOT NULL,
     "status" "Status" NOT NULL,
 
@@ -48,7 +48,7 @@ CREATE UNIQUE INDEX "Patient_email_key" ON "Patient"("email");
 CREATE UNIQUE INDEX "Doctor_email_key" ON "Doctor"("email");
 
 -- AddForeignKey
-ALTER TABLE "AppointmentPatientDoctor" ADD CONSTRAINT "AppointmentPatientDoctor_patientID_fkey" FOREIGN KEY ("patientID") REFERENCES "Patient"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AppointmentPatientDoctor" ADD CONSTRAINT "AppointmentPatientDoctor_patientID_fkey" FOREIGN KEY ("patientID") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AppointmentPatientDoctor" ADD CONSTRAINT "AppointmentPatientDoctor_doctorID_fkey" FOREIGN KEY ("doctorID") REFERENCES "Doctor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AppointmentPatientDoctor" ADD CONSTRAINT "AppointmentPatientDoctor_doctorID_fkey" FOREIGN KEY ("doctorID") REFERENCES "Doctor"("id") ON DELETE SET NULL ON UPDATE CASCADE;

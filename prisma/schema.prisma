@@ -11,7 +11,6 @@ model Patient {
     id          String                     @id @default(uuid())
     email       String                     @unique
     password    String
-    role        String                     @default("patient")
     name        String
     imageURL    String
     appointment AppointmentPatientDoctor[]
@@ -23,7 +22,6 @@ model Doctor {
     specialization String                     @default("Umum")
     password       String
     name           String
-    role           String                     @default("doctor")
     imageURL       String
     location       String
     hospital       String
@@ -33,10 +31,10 @@ model Doctor {
 
 model AppointmentPatientDoctor {
     appointmentId String   @id @default(uuid())
-    patient       Patient  @relation(fields: [patientID], references: [id])
-    patientID     String
-    doctor        Doctor   @relation(fields: [doctorID], references: [id])
-    doctorID      String
+    patient       Patient? @relation(fields: [patientID], references: [id])
+    patientID     String?
+    doctor        Doctor?  @relation(fields: [doctorID], references: [id])
+    doctorID      String?
     datetime      DateTime
     status        Status
 }

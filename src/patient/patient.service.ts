@@ -9,6 +9,8 @@ import { UpdatePatientDto } from './dto/update-patient.dto';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt/dist';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { ChangePassword } from './dto/update-patient.dto';
+import { Request } from 'express';
 
 @Injectable()
 export class PatientService {
@@ -16,6 +18,22 @@ export class PatientService {
     private prismaService: PrismaService,
     private jwtService: JwtService,
   ) {}
+
+  private async generateToken(data: CreatePatientDto) {
+    const payload = {
+      sub: data.id,
+      name: data.name,
+      email: data.email,
+      role: 'patient',
+    };
+    const options: JwtSignOptions = {
+      secret: process.env.JWT_KEY,
+      expiresIn: '24h',
+      algorithm: 'HS256',
+    };
+    const token = await this.jwtService.signAsync(payload, options);
+    return token;
+  }
 
   async register(registerDto: CreatePatientDto) {
     const isExist = await this.prismaService.patient.findFirst({
@@ -53,14 +71,11 @@ export class PatientService {
       throw new UnauthorizedException();
     }
     response.password = undefined;
-    const options: JwtSignOptions = {
-      secret: process.env['JWT_KEY'],
-      expiresIn: '24h',
-      algorithm: 'HS256',
-    };
+    const token = await this.generateToken(response);
     return {
-      response: response,
-      access_token: await this.jwtService.signAsync(response, options),
+      id: response.id,
+      role: 'patient',
+      access_token: token,
     };
   }
 
@@ -87,27 +102,19 @@ export class PatientService {
     const patient = await this.prismaService.patient.findUnique({
       where: { id },
     });
+    const updatedData: UpdatePatientDto = {
+      id: patient.id,
+      password: patient.password,
+      name: updatePatientDto.name || patient.name,
+      email: updatePatientDto.email || patient.email,
+      imageURL: updatePatientDto.imageURL || patient.imageURL,
+    };
     if (!patient) {
       throw new NotFoundException('Patient not found!');
     }
     const updatedPatient = await this.prismaService.patient.update({
       where: { id },
-      data: updatePatientDto,
-    });
-    updatedPatient.password = undefined;
-    return updatedPatient;
-  }
-
-  async partialUpdatePatient(id: string, updatePatientDto: UpdatePatientDto) {
-    const patient = await this.prismaService.patient.findUnique({
-      where: { id },
-    });
-    if (!patient) {
-      throw new NotFoundException('Patient not found!');
-    }
-    const updatedPatient = await this.prismaService.patient.update({
-      where: { id },
-      data: updatePatientDto,
+      data: updatedData,
     });
     updatedPatient.password = undefined;
     return updatedPatient;
@@ -123,5 +130,33 @@ export class PatientService {
     await this.prismaService.patient.delete({
       where: { id },
     });
+  }
+
+  async changePassword(id: string, data: ChangePassword, req: Request) {
+    const response = await this.prismaService.patient.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    const isMatch = bcrypt.compareSync(data.oldPassword, response.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('wrong password');
+    }
+    if (id !== req['user'].sub) {
+      throw new UnauthorizedException('unmatched user');
+    }
+    const changed = await this.prismaService.patient.update({
+      where: {
+        id: id,
+      },
+      data: {
+        password: bcrypt.hashSync(
+          data.newPassword,
+          Number(process.env['HASH_SALT']),
+        ),
+      },
+    });
+    changed.password = undefined;
+    return changed;
   }
 }

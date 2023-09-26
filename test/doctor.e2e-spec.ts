@@ -14,16 +14,6 @@ describe('AppController e2e', () => {
     imageURL: 'abc',
     location: 'surabaya',
     hospital: 'rsud',
-    schedule: [
-      {
-        days: 'senin',
-        time: ['09.00', '10.00'],
-      },
-      {
-        days: 'selasa',
-        time: ['9.00', '10.00'],
-      },
-    ],
   };
   const data1 = {
     ...data,
@@ -43,11 +33,17 @@ describe('AppController e2e', () => {
     schedule: [
       {
         days: 'senin',
-        time: ['13.00', '17.00'],
+        time: [
+          `${Math.floor(Math.random() * 25)}.00`,
+          `${Math.floor(Math.random() * 25)}.00`,
+        ],
       },
       {
         days: 'selasa',
-        time: ['18.00', '21.00'],
+        time: [
+          `${Math.floor(Math.random() * 25)}.00`,
+          `${Math.floor(Math.random() * 25)}.00`,
+        ],
       },
     ],
   };
@@ -137,6 +133,10 @@ describe('AppController e2e', () => {
     });
 
     it('CHANGE PASSWORD', async () => {
+      const defaultPassword = {
+        oldPassword: 'newpassworddoctor',
+        newPassword: 'doktertest',
+      };
       const newPassword = {
         oldPassword: 'doktertest',
         newPassword: 'newpassworddoctor',
@@ -163,6 +163,12 @@ describe('AppController e2e', () => {
         });
       expect(oldLogin.status).toBe(401);
       expect(newLogin.status).toBe(201);
+
+      // CHANGE PASSWORD BACK TO DEFAULT
+      await request(app.getHttpServer())
+        .patch(`/doctor/change-password/${doctorId}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(defaultPassword);
     });
   });
 });

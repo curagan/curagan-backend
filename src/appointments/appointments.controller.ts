@@ -76,6 +76,8 @@ export class AppointmentsController {
     @Query('end') end: string,
     @Param('doctorId') id: string,
   ) {
+    console.log(start);
+    console.log(end);
     return this.AppointmentsService.getHistory(start, end, id);
   }
 }

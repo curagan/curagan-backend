@@ -28,7 +28,7 @@ import { Request } from 'express';
 @Controller('doctor')
 @ApiTags('doctor')
 export class DoctorController {
-  constructor(private readonly doctorService: DoctorService) {}
+  constructor(private readonly doctorService: DoctorService) { }
 
   /// AUTH CONTROLLER
   @Post('/auth/login')
@@ -61,9 +61,6 @@ export class DoctorController {
 
   /// BASIC CRUD
   @Get('/')
-  @UseGuards(RoleGuard)
-  @Roles('doctor')
-  @UseGuards(AuthGuard)
   @ApiOkResponse({ type: Doctor, isArray: true })
   @ApiQuery({
     name: 'q',
@@ -76,9 +73,6 @@ export class DoctorController {
   }
 
   @Get('/:id')
-  @UseGuards(RoleGuard)
-  @Roles('doctor')
-  @UseGuards(AuthGuard)
   @ApiOkResponse({ type: Doctor })
   getDoctorById(@Param('id') id: string) {
     return this.doctorService.getDoctorById(id);

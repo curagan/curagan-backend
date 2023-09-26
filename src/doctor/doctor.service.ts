@@ -4,13 +4,8 @@ import {
   UnauthorizedException,
   ConflictException,
 } from '@nestjs/common';
-import {
-  CreateDoctorDto,
-  DoctorDto,
-  LoginDto,
-  SearchDoctor,
-} from './dto/create-doctor.dto';
-import { ChangePassword, UpdateDoctorDto } from './dto/update-doctor.dto';
+import { CreateDoctorDto, LoginDto, DoctorDto, SearchDoctor } from './dto/create-doctor.dto';
+import { UpdateDoctorDto, ChangePassword } from './dto/update-doctor.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
@@ -21,7 +16,7 @@ export class DoctorService {
   constructor(
     private readonly prismaService: PrismaService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   private async generateToken(data: DoctorDto) {
     const payload = {
@@ -81,6 +76,7 @@ export class DoctorService {
           createDoctorDto.password,
           Number(process.env['HASH_SALT']),
         ),
+        role: 'doctor',
       },
     });
     newDoctor.password = undefined;
@@ -115,7 +111,7 @@ export class DoctorService {
     const updatedData = {
       email: updateDoctorDto.email || doctor.email,
       name: updateDoctorDto.name || doctor.name,
-      imageUrl: updateDoctorDto.imageURL || doctor.imageURL,
+      imageURL: updateDoctorDto.imageURL || doctor.imageURL,
       hospital: updateDoctorDto.hospital || doctor.hospital,
       schedule: JSON.stringify([updateDoctorDto.schedule]) || doctor.schedule,
     };

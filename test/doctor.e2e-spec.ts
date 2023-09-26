@@ -15,6 +15,14 @@ describe('AppController e2e', () => {
     location: 'surabaya',
     hospital: 'rsud',
   };
+  const randomData = {
+    email: `testing${Math.floor(Math.random() * 1000)}@email.com`,
+    password: 'doktertest',
+    name: 'doktertest',
+    imageURL: 'abc',
+    location: 'surabaya',
+    hospital: 'rsud',
+  };
   const data1 = {
     ...data,
     email: 'testing1@email.com',
@@ -63,7 +71,13 @@ describe('AppController e2e', () => {
         .post('/doctor/auth/register')
         .send(data);
       if (registerResponse.status === 409) {
-        return expect(registerResponse.status).toBe(409);
+        const registerRandomData = await request(app.getHttpServer())
+          .post('/doctor/auth/register')
+          .send(randomData);
+        return (
+          expect(registerRandomData.status).toBe(201),
+          expect(registerRandomData).toBeDefined
+        );
       }
       expect(registerResponse.status).toBe(201);
       expect(registerResponse).toBeDefined();

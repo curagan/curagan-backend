@@ -4,7 +4,12 @@ import {
   UnauthorizedException,
   ConflictException,
 } from '@nestjs/common';
-import { CreateDoctorDto, LoginDto, DoctorDto, SearchDoctor } from './dto/create-doctor.dto';
+import {
+  CreateDoctorDto,
+  LoginDto,
+  DoctorDto,
+  SearchDoctor,
+} from './dto/create-doctor.dto';
 import { UpdateDoctorDto, ChangePassword } from './dto/update-doctor.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -16,7 +21,7 @@ export class DoctorService {
   constructor(
     private readonly prismaService: PrismaService,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   private async generateToken(data: DoctorDto) {
     const payload = {
@@ -76,7 +81,6 @@ export class DoctorService {
           createDoctorDto.password,
           Number(process.env['HASH_SALT']),
         ),
-        role: 'doctor',
       },
     });
     newDoctor.password = undefined;

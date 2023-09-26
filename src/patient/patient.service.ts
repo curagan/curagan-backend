@@ -7,7 +7,7 @@ import {
 import { CreatePatientDto, LoginPatient } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt/dist';
-import { PrismaService } from '../prisma/prisma.service'
+import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class PatientService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async register(registerDto: CreatePatientDto) {
     const isExist = await this.prismaService.patient.findFirst({
@@ -33,7 +33,6 @@ export class PatientService {
           registerDto.password,
           Number(process.env['HASH_SALT']),
         ),
-        role: 'patient',
       },
     });
     newUser.password = undefined;
@@ -89,8 +88,8 @@ export class PatientService {
       where: { id },
     });
     if (!patient) {
-      throw new NotFoundException("Patient not found!");
-    };
+      throw new NotFoundException('Patient not found!');
+    }
     const updatedPatient = await this.prismaService.patient.update({
       where: { id },
       data: updatePatientDto,
@@ -104,8 +103,8 @@ export class PatientService {
       where: { id },
     });
     if (!patient) {
-      throw new NotFoundException("Patient not found!");
-    };
+      throw new NotFoundException('Patient not found!');
+    }
     const updatedPatient = await this.prismaService.patient.update({
       where: { id },
       data: updatePatientDto,
@@ -119,8 +118,8 @@ export class PatientService {
       where: { id },
     });
     if (!patient) {
-      throw new NotFoundException("Patient not found!");
-    };
+      throw new NotFoundException('Patient not found!');
+    }
     await this.prismaService.patient.delete({
       where: { id },
     });

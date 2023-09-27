@@ -20,7 +20,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Patient } from './entities/patient.entity';
-import { AuthGuard } from '../doctor/doctor.guard';
+import { AuthGuard, AuthorGuard } from '../doctor/doctor.guard';
 import { Request } from 'express';
 
 @Controller('patient')
@@ -58,6 +58,7 @@ export class PatientController {
   }
 
   @Put('/:id')
+  @UseGuards(AuthorGuard)
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Patient })
@@ -69,6 +70,7 @@ export class PatientController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthorGuard)
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Patient })
@@ -77,6 +79,7 @@ export class PatientController {
   }
 
   @Patch('/change-password/:id')
+  @UseGuards(AuthorGuard)
   @UseGuards(AuthGuard)
   changePassword(
     @Param('id') id: string,

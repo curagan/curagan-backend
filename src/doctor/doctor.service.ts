@@ -137,9 +137,6 @@ export class DoctorService {
     if (!doctor) {
       throw new NotFoundException();
     }
-    if (id !== req['user'].sub) {
-      throw new UnauthorizedException();
-    }
     await this.prismaService.doctor.delete({
       where: { id },
     });
@@ -173,6 +170,9 @@ export class DoctorService {
     if (!response) {
       throw new NotFoundException();
     }
+    response.map((res) => {
+      res.password = undefined;
+    });
     return response;
   }
 

@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('auth1');
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
@@ -28,8 +28,42 @@ export class AuthGuard implements CanActivate {
       });
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('auth2');
     }
+    return true;
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const authHeader = request.headers.authorization;
+    const [scheme, token] = authHeader ? authHeader.split(' ') : [];
+
+    return scheme === 'Bearer' ? token : undefined;
+  }
+}
+
+@Injectable()
+export class AuthorGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractTokenFromHeader(request);
+    if (!token) {
+      throw new UnauthorizedException('author1');
+    }
+    // try {
+    const payload = await this.jwtService.verifyAsync(token, {
+      secret: process.env['JWT_KEY'],
+    });
+    console.log(payload);
+    if (payload.sub !== request.params.id) {
+      throw new UnauthorizedException('Not Yours');
+    }
+    console.log(payload);
+    request['user'] = payload;
+    // } catch {
+    //   throw new UnauthorizedException('author2');
+    // }
     return true;
   }
 

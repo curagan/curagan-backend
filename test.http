@@ -21,8 +21,8 @@ Content-Type: application/json
 }
 
 ### GET ALL DOCTOR
-GET http://localhost:4000/doctor
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOTM0ZjFjMS01NDJjLTQ1OWYtYjdmMy03OGMzMjhhN2VhYTgiLCJuYW1lIjoiZG9rdGVydGVzdCIsImVtYWlsIjoidGVzdGluZzJAZW1haWwuY29tIiwicm9sZSI6ImRvY3RvciIsImlhdCI6MTY5NTY0NDM0NywiZXhwIjoxNjk1NzMwNzQ3fQ.7PAATPjERrl0TK_tgZ03oVbMl5Zu_j1wi5gATstHKYs
+GET http://localhost:4000/doctor/cba93c64-9d08-4d7e-967c-ea78db18903e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYmE5M2M2NC05ZDA4LTRkN2UtOTY3Yy1lYTc4ZGIxODkwM2UiLCJuYW1lIjoiYmFtYmFuZyIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1ODE3MzE3LCJleHAiOjE2OTU5MDM3MTd9.47ItkyblOp335Tfa3SgVujDYqg2DQ6hWEWlj1LWcefM
 ### GET ALL DOCTOR USING PATIENT'S TOKEN
 GET http://localhost:4000/doctor
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhYWNhMDRmLWQ3ZDctNDVlMC1hYmFkLTU3YzBkMGM0ZGNjOSIsImVtYWlsIjoicGF0aWVudDFAdGVzdGluZy5jb20iLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiaW1hZ2VVUkwiOiJzdHJpbmciLCJpYXQiOjE2OTUzODYxODAsImV4cCI6MTY5NTQ3MjU4MH0.O3qEA-bK60BtroqOFYSdbYivwSg03secwa3h8U-aqIE
@@ -38,19 +38,22 @@ Content-Type: application/json
 {
   "schedule" : [{
     "days": "senin",
-    "time": ["09.00", "10.00"]
+    "time": ["09.00", "10.00", "11.00"]
+  },{
+    "days": "selasa",
+    "time": ["09.00", "10.00", "11.00"]
   }]
 }
 
 
 ### CHANGE PASSWORD
-PATCH http://localhost:4000/doctor/change-password/bd788478-513d-4a09-812e-f1c078f32144
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZDc4ODQ3OC01MTNkLTRhMDktODEyZS1mMWMwNzhmMzIxNDQiLCJuYW1lIjoiZG9rdGVydGVzdCIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1NjUzNzMxLCJleHAiOjE2OTU3NDAxMzF9.N2IbbW65LGjfK0xR42UApjpdsMyd9pWTlwLnwmAifao
+PATCH http://localhost:4000/doctor/change-password/cba93c64-9d08-4d7e-967c-ea78db18903e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYmE5M2M2NC05ZDA4LTRkN2UtOTY3Yy1lYTc4ZGIxODkwM2UiLCJuYW1lIjoiYmFtYmFuZyIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1ODIxNjM0LCJleHAiOjE2OTU5MDgwMzR9.EQUnEo_v8U9o0sb4whtOB8_zHVHm9L_AFZSJh62CQE0
 Content-Type: application/json
 
 {
-  "oldPassword": "newpassworddoctor",
-  "newPassword": "doktertest"
+  "oldPassword": "doktertest",
+  "newPassword": "newpassworddoctor"
 }
 
 ### DELETE DOCTOR

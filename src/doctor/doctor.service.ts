@@ -152,16 +152,19 @@ export class DoctorService {
           {
             name: {
               contains: String(data.name).toLowerCase(),
+              mode: 'insensitive',
             },
           },
           {
             location: {
               contains: String(data.location).toLowerCase(),
+              mode: 'insensitive',
             },
           },
           {
             hospital: {
               contains: String(data.hospital).toLowerCase(),
+              mode: 'insensitive',
             },
           },
         ],

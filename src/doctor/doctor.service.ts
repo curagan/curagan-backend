@@ -117,7 +117,7 @@ export class DoctorService {
       name: updateDoctorDto.name || doctor.name,
       imageURL: updateDoctorDto.imageURL || doctor.imageURL,
       hospital: updateDoctorDto.hospital || doctor.hospital,
-      schedule: JSON.stringify([updateDoctorDto.schedule]) || doctor.schedule,
+      schedule: JSON.stringify(updateDoctorDto.schedule) || doctor.schedule,
     };
     if (!doctor) {
       throw new NotFoundException();

@@ -46,17 +46,8 @@ export class DoctorController {
 
   // FILTER DOCTOR BY NAME, LOCATION AND HOSPITAL
   @Get('/query')
-  searchDoctor(
-    @Query('name') name: string,
-    @Query('location') location: string,
-    @Query('hospital') hospital: string,
-  ) {
-    const data = {
-      name: name,
-      location: location,
-      hospital: hospital,
-    };
-    return this.doctorService.searchDoctor(data);
+  searchDoctor(@Query('name') name: string) {
+    return this.doctorService.searchDoctor(name);
   }
 
   /// BASIC CRUD

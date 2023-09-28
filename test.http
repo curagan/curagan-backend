@@ -3,9 +3,9 @@ POST http://localhost:4000/doctor/auth/register
 Content-Type: application/json
 
 {
-  "email": "testing@email.com",
+  "email": "testing3@email.com",
   "password": "doktertest",
-  "name": "bambang",
+  "name": "bambang agus",
   "imageURL": "abc",
   "location": "surabaya",
   "hospital": "rsud"
@@ -17,22 +17,22 @@ Content-Type: application/json
 
 {
     "email": "testing@email.com",
-    "password": "doktertest"
+    "password": "newpassworddoctor"
 }
 
 ### GET ALL DOCTOR
-GET http://localhost:4000/doctor/cba93c64-9d08-4d7e-967c-ea78db18903e
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYmE5M2M2NC05ZDA4LTRkN2UtOTY3Yy1lYTc4ZGIxODkwM2UiLCJuYW1lIjoiYmFtYmFuZyIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1ODE3MzE3LCJleHAiOjE2OTU5MDM3MTd9.47ItkyblOp335Tfa3SgVujDYqg2DQ6hWEWlj1LWcefM
+GET https://curagan-api.nikenhpsr.site/doctor
+
 ### GET ALL DOCTOR USING PATIENT'S TOKEN
 GET http://localhost:4000/doctor
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhYWNhMDRmLWQ3ZDctNDVlMC1hYmFkLTU3YzBkMGM0ZGNjOSIsImVtYWlsIjoicGF0aWVudDFAdGVzdGluZy5jb20iLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiaW1hZ2VVUkwiOiJzdHJpbmciLCJpYXQiOjE2OTUzODYxODAsImV4cCI6MTY5NTQ3MjU4MH0.O3qEA-bK60BtroqOFYSdbYivwSg03secwa3h8U-aqIE
 
 ### FILTER DOCTOR
-GET http://localhost:4000/doctor/query?location=surabaya
+GET http://localhost:4000/doctor/query?name=bambang%20agus
 
 ### EDIT DOCTOR DATA
 PUT http://localhost:4000/doctor/cba93c64-9d08-4d7e-967c-ea78db18903e
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYmE5M2M2NC05ZDA4LTRkN2UtOTY3Yy1lYTc4ZGIxODkwM2UiLCJuYW1lIjoiYmFtYmFuZyIsImVtYWlsIjoidGVzdGluZ0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1ODE3MzE3LCJleHAiOjE2OTU5MDM3MTd9.47ItkyblOp335Tfa3SgVujDYqg2DQ6hWEWlj1LWcefM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzhmOGJkNC1mMmQ4LTRhNWYtOTJhMS04OTYyOTkxYzg4MjgiLCJuYW1lIjoiYmFtYmFuZyBhZ3VzIiwiZW1haWwiOiJ0ZXN0aW5nM0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1ODI1NjkxLCJleHAiOjE2OTU5MTIwOTF9.-MtnJhcEzDBPsG8P5uHg2kVMl8TZDYBbOy7pWa62NyE
 Content-Type: application/json
 
 {
@@ -53,7 +53,7 @@ Content-Type: application/json
 
 {
   "oldPassword": "doktertest",
-  "newPassword": "newpassworddoctor"
+  "newPassword": "c"
 }
 
 ### DELETE DOCTOR

@@ -142,25 +142,25 @@ export class DoctorService {
     });
   }
 
-  async searchDoctor(data: SearchDoctor) {
+  async searchDoctor(data: string) {
     const response = await this.prismaService.doctor.findMany({
       where: {
         OR: [
           {
             name: {
-              contains: String(data.name).toLowerCase(),
+              contains: String(data).toLowerCase(),
               mode: 'insensitive',
             },
           },
           {
             location: {
-              contains: String(data.location).toLowerCase(),
+              contains: String(data).toLowerCase(),
               mode: 'insensitive',
             },
           },
           {
             hospital: {
-              contains: String(data.hospital).toLowerCase(),
+              contains: String(data).toLowerCase(),
               mode: 'insensitive',
             },
           },

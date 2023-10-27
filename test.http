@@ -3,12 +3,12 @@ POST http://localhost:4000/doctor/auth/register
 Content-Type: application/json
 
 {
-  "email": "testing3@email.com",
-  "password": "doktertest",
-  "name": "bambang agus",
+  "email": "agus@gmail.com",
+  "password": "dokteragus123",
+  "name": "Agus Herianto",
   "imageURL": "abc",
-  "location": "surabaya",
-  "hospital": "rsud"
+  "location": "Balikpapan",
+  "hospital": "RSUD Kanujoso"
 }
 
 ### LOGIN FOR DOCTOR
@@ -16,8 +16,8 @@ POST http://localhost:4000/doctor/auth/login
 Content-Type: application/json
 
 {
-    "email": "testing@email.com",
-    "password": "newpassworddoctor"
+    "email": "agus@gmail.com",
+    "password": "dokteragus123"
 }
 
 ### GET ALL DOCTOR
@@ -25,23 +25,22 @@ GET https://curagan-api.nikenhpsr.site/doctor
 
 ### GET ALL DOCTOR USING PATIENT'S TOKEN
 GET http://localhost:4000/doctor
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhYWNhMDRmLWQ3ZDctNDVlMC1hYmFkLTU3YzBkMGM0ZGNjOSIsImVtYWlsIjoicGF0aWVudDFAdGVzdGluZy5jb20iLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiaW1hZ2VVUkwiOiJzdHJpbmciLCJpYXQiOjE2OTUzODYxODAsImV4cCI6MTY5NTQ3MjU4MH0.O3qEA-bK60BtroqOFYSdbYivwSg03secwa3h8U-aqIE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOTM2MzU4OS04NzNkLTQ4YzAtOGMwMy05YTMwNzc0ZmNmMmIiLCJuYW1lIjoiQWd1cyBIZXJpYW50byIsImVtYWlsIjoiYWd1c0BnbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk4NDE4MjM4LCJleHAiOjE2OTg1MDQ2Mzh9.6p6SvAVY-IXsMUgd3-sORPoM1ruazIoa0RBD0BdplxM
 
 ### FILTER DOCTOR
 GET http://localhost:4000/doctor/query?name=bambang%20agus
 
 ### EDIT DOCTOR DATA
-PUT http://localhost:4000/doctor/cba93c64-9d08-4d7e-967c-ea78db18903e
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzhmOGJkNC1mMmQ4LTRhNWYtOTJhMS04OTYyOTkxYzg4MjgiLCJuYW1lIjoiYmFtYmFuZyBhZ3VzIiwiZW1haWwiOiJ0ZXN0aW5nM0BlbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk1ODI1NjkxLCJleHAiOjE2OTU5MTIwOTF9.-MtnJhcEzDBPsG8P5uHg2kVMl8TZDYBbOy7pWa62NyE
+PUT http://localhost:4000/doctor/19b9bc5e-d05e-455e-86d5-bfd0fcfe566d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOWI5YmM1ZS1kMDVlLTQ1NWUtODZkNS1iZmQwZmNmZTU2NmQiLCJuYW1lIjoiQWd1cyBIZXJpYW50byIsImVtYWlsIjoiYWd1c0BnbWFpbC5jb20iLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNjk4NDIxMTcxLCJleHAiOjE2OTg1MDc1NzF9.IG04mIuVi_X2aExI3z8VWFghSfWoAktEn6OCfkeLE7o
 Content-Type: application/json
 
 {
   "schedule" : [{
-    "days": "senin",
-    "time": ["09.00", "10.00", "11.00"]
-  },{
-    "days": "selasa",
-    "time": ["09.00", "10.00", "11.00"]
+    "date": "30",
+    "month": "10",
+    "year": "2023",
+    "time": ["08.00", "09.00"]
   }]
 }
 
@@ -67,9 +66,9 @@ POST http://localhost:4000/patient/auth/register
 Content-Type: application/json
 
 {
-  "email": "patient@testing.com",
-  "password": "patienttest",
-  "name": "patient test",
+  "email": "mahdi@gmail.com",
+  "password": "Mahdi123",
+  "name": "Mahdi Harish",
   "imageURL": "string"
 }
 
@@ -79,8 +78,8 @@ POST http://localhost:4000/patient/auth/login
 Content-Type: application/json
 
 {
-  "email": "patient@testing.com",
-  "password": "patienttest"
+  "email": "mahdi@gmail.com",
+  "password": "Mahdi123"
 }
 
 ### GET ALL PATIENT
@@ -107,13 +106,13 @@ Content-Type: application/json
 ### CREATE APPOINTMENT
 POST http://localhost:4000/appointments
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTk3NDhlMS1mZDEwLTRjMjAtOTRkMi05OWVlY2VkMjBkNzciLCJuYW1lIjoicGF0aWVudCB0ZXN0IiwiZW1haWwiOiJwYXRpZW50QHRlc3RpbmcuY29tIiwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE2OTU3MzYzNDcsImV4cCI6MTY5NTgyMjc0N30.up4xPiXcsvPBq8V34RsoZg-WAlk0GcQ9IBvPnDom0YQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxZTQ5NjU3Mi00YzBmLTRkODktODg0Zi1mZjMwNGE2ZTk5ZTIiLCJuYW1lIjoiTWFoZGkgSGFyaXNoIiwiZW1haWwiOiJtYWhkaUBnbWFpbC5jb20iLCJyb2xlIjoicGF0aWVudCIsImlhdCI6MTY5ODQyMDM1NSwiZXhwIjoxNjk4NTA2NzU1fQ.SzjVPCAwhkjYxY19FWXd_kWN4h8t9inhwJOrsLJl2gQ
 
 {
-  "patientID": "119748e1-fd10-4c20-94d2-99eeced20d77",
-  "doctorID":"cba93c64-9d08-4d7e-967c-ea78db18903e",
-  "datetime": "2023-09-20T10:43:19.187Z",
-  "status": "Done"
+  "patientID": "1e496572-4c0f-4d89-884f-ff304a6e99e2",
+  "doctorID":"19363589-873d-48c0-8c03-9a30774fcf2b",
+  "datetime": "2023-09-20T09:00:00.000Z",
+  "status": "Pending"
 }
 
 ### GET APPOINTMENT HISTORY USING DOCTOR'S TOKEN

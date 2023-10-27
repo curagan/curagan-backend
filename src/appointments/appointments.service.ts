@@ -8,14 +8,15 @@ export class AppointmentsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createAppointmentDto: CreateAppointmentDto) {
-    const { patientID, doctorID, datetime, status } = createAppointmentDto;
+    const { patientID, doctorID, datetime } = createAppointmentDto;
 
+    // When creating a new appointment, set the status to 'Pending' by default.
     return this.prisma.appointmentPatientDoctor.create({
       data: {
         patient: { connect: { id: patientID } },
         doctor: { connect: { id: doctorID } },
         datetime,
-        status,
+        status: 'Pending',
       },
     });
   }
@@ -61,6 +62,7 @@ export class AppointmentsService {
     appointmentId: string,
     UpdateAppointmentDto: UpdateAppointmentDto,
   ) {
+    const { status, rejectionReason } = UpdateAppointmentDto;
     const appointment = await this.prisma.appointmentPatientDoctor.findUnique({
       where: { appointmentId },
     });
@@ -69,13 +71,21 @@ export class AppointmentsService {
       throw new NotFoundException(
         `No appointment was found with the specified ID: ${appointmentId}.`,
       );
-    }
+    };
+    if (status === 'Accepted') {
+      appointment.status = 'Accepted';
+    } else if (status === 'Rejected') {
+      if (!rejectionReason) {
+      throw new Error('Rejection reason is required when rejecting the appointment.');
+      };
+    };
 
     const updatedAppointment =
       await this.prisma.appointmentPatientDoctor.update({
         where: { appointmentId },
         data: {
           status: UpdateAppointmentDto.status,
+          rejectionReason: appointment.rejectionReason,
         },
       });
 

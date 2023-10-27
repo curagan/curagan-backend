@@ -30,13 +30,14 @@ model Doctor {
 }
 
 model AppointmentPatientDoctor {
-    appointmentId String   @id @default(uuid())
-    patient       Patient? @relation(fields: [patientID], references: [id])
-    patientID     String?
-    doctor        Doctor?  @relation(fields: [doctorID], references: [id])
-    doctorID      String?
-    datetime      DateTime
-    status        Status
+    appointmentId   String   @id @default(uuid())
+    patient         Patient? @relation(fields: [patientID], references: [id])
+    patientID       String?
+    doctor          Doctor?  @relation(fields: [doctorID], references: [id])
+    doctorID        String?
+    datetime        DateTime
+    status          Status
+    rejectionReason String?
 }
 
 enum Specialization {
